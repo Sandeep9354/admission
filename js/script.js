@@ -1,7 +1,7 @@
 
     // Check token in localStorage
 if (!localStorage.getItem("token_full")) {
-    window.location.href = "login.php"; // redirect to login page
+    window.location.href = "login.html"; // redirect to login page
 } 
 document.getElementById("logoutBtn").addEventListener("click", function(e) {
     e.preventDefault();
@@ -942,4 +942,5 @@ document.addEventListener('DOMContentLoaded', () => {
             setupSearchDebounce();
             fetchAdmissions();
         });
+
 
