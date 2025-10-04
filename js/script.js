@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const res = await fetch('https://1b690f1d6b1a.ngrok-free.app/admissions/public/api/dashboard-stats', {
+                const res = await fetch('https://1b690f1d6b1a.ngrok-free.app/api/dashboard-stats', {
                     headers: authHeaders
                 });
 
