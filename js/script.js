@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // When modal opens, fetch user data
     profileModalEl.addEventListener('show.bs.modal', async () => {
         try {
-            const res = await fetch('https://1b690f1d6b1a.ngrok-free.app/api/me', { headers: authHeaders });
+            const res = await fetch('http://https://1b690f1d6b1a.ngrok-free.app/api/me', { headers: authHeaders });
             if(!res.ok) throw new Error('Failed to fetch profile');
             const data = await res.json();
 
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res = await fetch(`https://1b690f1d6b1a.ngrok-free.app/api/users/${userIdInput.value}`, {
+            const res = await fetch(`http://https://1b690f1d6b1a.ngrok-free.app/api/users/${userIdInput.value}`, {
                 method: 'PUT',
                 headers: authHeaders,
                 body: JSON.stringify(payload)
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     // Submit to backend
-                    const res = await fetch("https://1b690f1d6b1a.ngrok-free.app/api/admissions", {
+                    const res = await fetch("http://https://1b690f1d6b1a.ngrok-free.app/api/admissions", {
                         method: "POST",
                         headers: { "Authorization": `Bearer ${token}` },
                         body: formData
@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const res = await fetch('https://1b690f1d6b1a.ngrok-free.app/api/dashboard-stats', {
+                const res = await fetch('http://https://1b690f1d6b1a.ngrok-free.app/api/dashboard-stats', {
                     headers: authHeaders
                 });
 
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-                    const res = await fetch(`https://1b690f1d6b1a.ngrok-free.app/api/admissions?${params.toString()}`, {
+                    const res = await fetch(`http://https://1b690f1d6b1a.ngrok-free.app/api/admissions?${params.toString()}`, {
                         headers: authHeaders,
                         signal: controller.signal
                     });
@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 viewModal.show();
 
                 try {
-                    const res = await fetch(`https://1b690f1d6b1a.ngrok-free.app/api/admissions/${admissionId}`, {
+                    const res = await fetch(`http://https://1b690f1d6b1a.ngrok-free.app/api/admissions/${admissionId}`, {
                         headers: authHeaders
                     });
 
@@ -508,7 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 editModal.show();
 
                 try {
-                    const res = await fetch(`https://1b690f1d6b1a.ngrok-free.app/api/admissions/${admissionId}`, {
+                    const res = await fetch(`http://https://1b690f1d6b1a.ngrok-free.app/api/admissions/${admissionId}`, {
                         headers: authHeaders
                     });
 
@@ -528,7 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const createFileLink = (filePath, fieldName) => {
                     if (!filePath) return '-';
                     const fileName = filePath.split('/').pop();
-                    return `<a href="https://1b690f1d6b1a.ngrok-free.app/${filePath}" target="_blank" class="file-link">${fileName}</a>`;
+                    return `<a href="http://https://1b690f1d6b1a.ngrok-free.app/${filePath}" target="_blank" class="file-link">${fileName}</a>`;
                 };
 
                 document.getElementById('viewAdmissionBody').innerHTML = `
@@ -884,7 +884,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showLoading(); // show loader
                 try {
 
-                    const res = await fetch(`https://1b690f1d6b1a.ngrok-free.app/api/admissions/${admissionId}`, {
+                    const res = await fetch(`http://https://1b690f1d6b1a.ngrok-free.app/api/admissions/${admissionId}`, {
                         method: 'PUT',
                         headers: authHeaders,
                         body: JSON.stringify(formData)
@@ -910,7 +910,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const admissionId = document.getElementById('delete-student-id').value;
                 showLoading(); // show loader
                 try {
-                    const res = await fetch(`https://1b690f1d6b1a.ngrok-free.app/api/admissions/${admissionId}`, {
+                    const res = await fetch(`http://https://1b690f1d6b1a.ngrok-free.app/api/admissions/${admissionId}`, {
                         method: 'DELETE',
                         headers: authHeaders
                     });
@@ -942,5 +942,3 @@ document.addEventListener('DOMContentLoaded', () => {
             setupSearchDebounce();
             fetchAdmissions();
         });
-
-
