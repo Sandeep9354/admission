@@ -1,31 +1,18 @@
-// Improved token check at the beginning
-function validateToken() {
-    const token = localStorage.getItem("token_full");
-    if (!token) {
-        window.location.href = "login.html";
-        return false;
-    }
-    
-    // Check if token is expired (basic check)
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        if (payload.exp && Date.now() >= payload.exp * 1000) {
-            localStorage.removeItem("token_full");
-            window.location.href = "login.html";
-            return false;
-        }
-    } catch (e) {
-        console.warn('Token validation error:', e);
-    }
-    
-    return true;
-}
 
-// Replace your initial token check with:
-if (!validateToken()) {
+    // Check token in localStorage
+if (!localStorage.getItem("token_full")) {
+    window.location.href = "login.html"; // redirect to login page
+} 
+document.getElementById("logoutBtn").addEventListener("click", function(e) {
+    e.preventDefault();
+
+    // Clear localStorage
+    localStorage.removeItem("token_full");
+
+    // Redirect to login
     window.location.href = "login.html";
-}
-validateToken()
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const profileModalEl = document.getElementById('profileModal');
     const profileModal = new bootstrap.Modal(profileModalEl);
@@ -259,12 +246,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const authHeaders = {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
                 'Accept': 'application/json'
             };
 
             try {
-                const res = await fetch('https://1b690f1d6b1a.ngrok-free.app/api/dashboard-stats', {
+                const res = await fetch('https://1b690f1d6b1a.ngrok-free.app/admissions/public/api/dashboard-stats', {
                     headers: authHeaders
                 });
 
