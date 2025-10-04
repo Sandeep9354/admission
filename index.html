@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Management - DAV PUBLIC SCHOOL DEHRI</title>
+    <!-- Bootstrap 5 CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Loading Overlay -->
+    <div id="globalLoading" style="
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(255,255,255,0.7);
+    z-index:1055;
+    justify-content:center;
+    align-items:center;
+">
+        <div class="text-center">
+            <i class="fas fa-spinner fa-spin fa-3x"></i>
+            <div>Loading...</div>
+        </div>
+    </div>
+
+    <!-- Header/Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="logo/dav-logo.jpg" loading="lazy"
+                    alt="School Logo" width="40" height="40" class="me-2">
+                DAV PUBLIC SCHOOL DEHRI
+            </a>
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i> Admin
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                <i class="fas fa-user me-2"></i> Profile
+                            </a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container-fluid mt-4">
+        <!-- Stats Section -->
+        <div class="row mb-4">
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted">Total Admissions</h5>
+                            <h2 class="text-primary" id="totalAdmissions">0</h2>
+                        </div>
+                        <div class="stats-icon text-primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted">Today's Admissions</h5>
+                            <h2 class="text-success" id="todaysAdmissions">0</h2>
+                        </div>
+                        <div class="stats-icon text-success">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted">Class-wise</h5>
+                            <h2 class="text-info" id="classCount">0 Classes</h2>
+                        </div>
+                        <div class="stats-icon text-info">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted">Pending</h5>
+                            <h2 class="text-warning" id="pendingAdmissions">0</h2>
+                        </div>
+                        <div class="stats-icon text-warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Main Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Admission Records</h4>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#admissionModal">
+                            <i class="fas fa-plus me-1"></i> Add New Admission
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <!-- Search and Filters -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" id="searchName"
+                                        placeholder="Search by student name, parent name...">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="filterClass">
+                                    <option value="" selected>Filter by Class</option>
+                                    <option>Class I</option>
+                                    <option>Class II</option>
+                                    <option>Class III</option>
+                                    <option>Class IV</option>
+                                    <option>Class V</option>
+                                    <option>Class VI</option>
+                                    <option>Class VII</option>
+                                    <option>Class VIII</option>
+                                    <option>Class IX</option>
+                                    <option>Class X</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="date" class="form-control" id="filterDate" placeholder="Filter by Date">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Class</th>
+                                        <th>Section</th>
+                                        <th>Father Name</th>
+                                        <th>Mother Name</th>
+                                        <th>Contact number</th>
+                                        <th>Gender</th>
+                                        <th>DOB</th>
+                                        <th>Status</th>
+                                        <th>Registration Number</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admissionsTableBody">
+                                    <!-- Table rows will be dynamically loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        <nav>
+                            <ul class="pagination justify-content-center" id="pagination">
+                                <!-- Pagination will be dynamically loaded here -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admission Modal -->
+    <div class="modal fade" id="admissionModal" tabindex="-1" aria-labelledby="admissionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="admissionModalLabel">New Admission Form 2026-27</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="admissionForm">
+                        <!-- Basic Student Info -->
+                        <h5 class="section-title">Basic Student Information</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="studentName" class="form-label">Student Name <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="studentName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="fatherName" class="form-label">Father Name</label>
+                                <input type="text" class="form-control" id="fatherName">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="motherName" class="form-label">Mother Name</label>
+                                <input type="text" class="form-control" id="motherName">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="class" class="form-label">Class for Admission <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="class" required>
+                                    <option value="" selected disabled>Select Class</option>
+                                    <option>Class I</option>
+                                    <option>Class II</option>
+                                    <option>Class III</option>
+                                    <option>Class IV</option>
+                                    <option>Class V</option>
+                                    <option>Class VI</option>
+                                    <option>Class VII</option>
+                                    <option>Class VIII</option>
+                                    <option>Class IX</option>
+                                    <option>Class X</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dob" class="form-label">Date of Birth <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="dob" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-select" id="gender">
+                                    <option value="" selected disabled>Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="parentOccupation" class="form-label">Parent Occupation</label>
+                                <input type="text" class="form-control" id="parentOccupation">
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="mobile" class="form-label">Mobile Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">+91</span>
+                                    <input type="tel" class="form-control digit-field" id="mobile" maxlength="10"
+                                        pattern="\d{10}" placeholder="XXXXXXXXXX" data-max="10" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="whatsapp" class="form-label">WhatsApp Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">+91</span>
+                                    <input type="tel" class="form-control digit-field" id="whatsapp" maxlength="10"
+                                        pattern="\d{10}" placeholder="XXXXXXXXXX" data-max="10" required>
+                                </div>
+                                <div class="form-check mt-1">
+                                    <input class="form-check-input" type="checkbox" id="sameAsMobile">
+                                    <label class="form-check-label" for="sameAsMobile">Same as Mobile Number</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="address" class="form-label">Address</label>
+                                <textarea class="form-control" id="address" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- File Uploads -->
+                        <h5 class="section-title">File Uploads</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container"
+                                    onclick="document.getElementById('studentPhoto').click()">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Upload Student Photo</p>
+                                    <small class="file-info">Max 10 MB (Image)</small>
+                                    <input type="file" id="studentPhoto" class="d-none" accept="image/*">
+                                    <div class="preview mt-2" id="previewStudentPhoto"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container"
+                                    onclick="document.getElementById('birthCertificate').click()">
+                                    <i class="fas fa-file-pdf"></i>
+                                    <p>Upload Birth Certificate</p>
+                                    <small class="file-info">Max 10 MB (PDF/Image)</small>
+                                    <input type="file" id="birthCertificate" class="d-none"
+                                        accept=".pdf,.doc,.docx,image/*">
+                                    <div class="preview mt-2" id="previewBirthCertificate"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container"
+                                    onclick="document.getElementById('studentAadhar').click()">
+                                    <i class="fas fa-id-card"></i>
+                                    <p>Upload Student's Aadhar</p>
+                                    <small class="file-info">Max 10 MB (PDF/Image)</small>
+                                    <input type="file" id="studentAadhar" class="d-none"
+                                        accept=".pdf,.doc,.docx,image/*">
+                                    <div class="preview mt-2" id="previewStudentAadhar"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container"
+                                    onclick="document.getElementById('fatherAadhar').click()">
+                                    <i class="fas fa-id-card"></i>
+                                    <p>Upload Father's Aadhar</p>
+                                    <small class="file-info">Max 10 MB (PDF/Image)</small>
+                                    <input type="file" id="fatherAadhar" class="d-none"
+                                        accept=".pdf,.doc,.docx,image/*">
+                                    <div class="preview mt-2" id="previewFatherAadhar"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container"
+                                    onclick="document.getElementById('motherAadhar').click()">
+                                    <i class="fas fa-id-card"></i>
+                                    <p>Upload Mother's Aadhar</p>
+                                    <small class="file-info">Max 10 MB (PDF/Image)</small>
+                                    <input type="file" id="motherAadhar" class="d-none"
+                                        accept=".pdf,.doc,.docx,image/*">
+                                    <div class="preview mt-2" id="previewMotherAadhar"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container"
+                                    onclick="document.getElementById('transferCertificate').click()">
+                                    <i class="fas fa-file-alt"></i>
+                                    <p>Transfer Certificate</p>
+                                    <small class="file-info">Max 10 MB (PDF/Image)</small>
+                                    <input type="file" id="transferCertificate" class="d-none"
+                                        accept=".pdf,.doc,.docx,image/*">
+                                    <div class="preview mt-2" id="previewTransferCertificate"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container"
+                                    onclick="document.getElementById('medicalCertificate').click()">
+                                    <i class="fas fa-file-medical"></i>
+                                    <p>Medical Certificate</p>
+                                    <small class="file-info">Max 10 MB (PDF/Image)</small>
+                                    <input type="file" id="medicalCertificate" class="d-none"
+                                        accept=".pdf,.doc,.docx,image/*">
+                                    <div class="preview mt-2" id="previewMedicalCertificate"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Academic Details -->
+                        <h5 class="section-title">Academic Details</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="permanentEduNo" class="form-label">Student Permanent Education No.</label>
+                                <input type="text" class="form-control digit-field" id="permanentEduNo" maxlength="12"
+                                    placeholder="XXXXXXXXXXXX" data-max="12" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="apparId" class="form-label">Student Appar ID No.</label>
+                                <input type="text" class="form-control digit-field" id="apparId" maxlength="8"
+                                    placeholder="XXXXXXXX" data-max="8" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="previousSchool" class="form-label">Student Previous School Details</label>
+                                <textarea class="form-control" id="previousSchool" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3" id="subjectRow" style="display:none;">
+                            <div class="col-md-6">
+                                <label for="subjectOpted" class="form-label">Subject Opted (Class 9 only)</label>
+                                <select class="form-select" id="subjectOpted">
+                                    <option value="" selected disabled>Select Subject</option>
+                                    <option>Hindi</option>
+                                    <option>Sanskrit</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Parent Contact -->
+                        <h5 class="section-title">Parent Contact</h5>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="parentEmail" class="form-label">Email ID of Mother/Father</label>
+                                <input type="email" class="form-control" id="parentEmail">
+                            </div>
+                        </div>
+
+                        <!-- Transport -->
+                        <h5 class="section-title">Transport</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Transport Facilities Taken?</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="transport" id="transportYes"
+                                            value="yes">
+                                        <label class="form-check-label" for="transportYes">Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="transport" id="transportNo"
+                                            value="no" checked>
+                                        <label class="form-check-label" for="transportNo">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="stoppage" class="form-label">If yes, mention stoppage</label>
+                                <input type="text" class="form-control" id="stoppage" disabled>
+                            </div>
+                        </div>
+
+                        <!-- Extra -->
+                        <h5 class="section-title">Extra Information</h5>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="dobWords" class="form-label">D.O.B in words</label>
+                                <input type="text" class="form-control" id="dobWords" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Registration -->
+                        <h5 class="section-title">Registration Information</h5>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="registrationNumber" class="form-label">Registration Number</label>
+                                <input type="text" class="form-control" id="registrationNumber" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="submitAdmission">Submit Admission</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- View Modal -->
+    <div class="modal fade" id="viewAdmissionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">View Admission Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="viewAdmissionBody">
+                    <!-- Student info will be injected here dynamically -->
+                    <div class="text-center"><i class="fas fa-spinner fa-spin fa-2x"></i> Loading...</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editAdmissionModal" tabindex="-1" aria-hidden="true">
+        <div id="editLoader" class="text-center my-3" style="display:none;">
+            <i class="fas fa-spinner fa-spin fa-2x"></i> Saving...
+        </div>
+
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Edit Admission</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="editAdmissionBody">
+                    <div class="text-center"><i class="fas fa-spinner fa-spin fa-2x"></i> Loading...</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success" id="saveAdmissionChanges">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirm Deletion</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this student admission record? This action cannot be undone.</p>
+                    <input type="hidden" id="delete-student-id">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger" id="confirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Profile Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm">
+                    <input type="hidden" id="user-id">
+                    <div class="mb-3">
+                        <label for="user-name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="user-name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="user-email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-password" class="form-label">Password (Leave blank to keep unchanged)</label>
+                        <input type="password" class="form-control" id="user-password">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="saveProfileChanges" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/script.js"></script>
+</body>
+
+</html>
