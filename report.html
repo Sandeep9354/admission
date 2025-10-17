@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Report Card - DAV Public School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            padding: 30px;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .report-card {
+            max-width: 900px;
+            width: 100%;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #e0e6ed;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a4a8d 0%, #2a6bc5 100%);
+            color: white;
+            padding: 25px 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(40%, -40%);
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+        
+        .school-brand {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo-container {
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #1a4a8d 0%, #2a6bc5 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            padding: 5px;
+        }
+        
+        .school-info {
+            flex: 1;
+        }
+        
+        .school-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .school-motto {
+            font-size: 14px;
+            opacity: 0.9;
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+        
+        .school-details {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+        
+        .report-title {
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            padding: 18px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a4a8d;
+            border-bottom: 1px solid #dee2e6;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .report-title::before, .report-title::after {
+            content: "✦";
+            color: #2a6bc5;
+            font-size: 18px;
+        }
+        
+        .student-info {
+            padding: 25px 35px;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #2a6bc5;
+        }
+        
+        .info-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .marks-section {
+            padding: 0;
+        }
+        
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+        
+        .marks-table th {
+            background: linear-gradient(to bottom, #1a4a8d, #2a6bc5);
+            color: white;
+            padding: 16px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+            position: relative;
+        }
+        
+        .marks-table th:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .marks-table td {
+            padding: 16px 14px;
+            border-bottom: 1px solid #eaeaea;
+            font-size: 15px;
+        }
+        
+        .marks-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        .marks-table tr:hover {
+            background-color: #edf2f7;
+        }
+        
+        .subject-name {
+            font-weight: 600;
+            color: #1a4a8d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .subject-icon {
+            color: #2a6bc5;
+            font-size: 14px;
+        }
+        
+        .total-row {
+            background: linear-gradient(to right, #e3f2fd, #f0f7ff) !important;
+            font-weight: 700;
+        }
+        
+        .total-row td {
+            border-top: 2px solid #1a4a8d;
+            border-bottom: none;
+            font-size: 16px;
+        }
+        
+        .performance-summary {
+            padding: 25px 35px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            background-color: #f8fafc;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .performance-item {
+            text-align: center;
+            padding: 20px 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease;
+            border-top: 4px solid #2a6bc5;
+        }
+        
+        .performance-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .performance-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .performance-value {
+            font-size: 26px;
+            font-weight: 700;
+        }
+        
+        .rank-value {
+            color: #e74c3c;
+        }
+        
+        .percentage-value {
+            color: #27ae60;
+        }
+        
+        .grade-value {
+            color: #9b59b6;
+        }
+        
+        .signature-area {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 35px;
+            border-top: 1px dashed #ccc;
+            background: white;
+        }
+        
+        .signature {
+            text-align: center;
+        }
+        
+        .signature-line {
+            width: 200px;
+            height: 1px;
+            background-color: #333;
+            margin: 35px auto 12px;
+        }
+        
+        .signature-name {
+            font-weight: 600;
+            color: #1a4a8d;
+        }
+        
+        .footer {
+            padding: 18px 35px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .footer-note {
+            margin-bottom: 5px;
+        }
+        
+        .dav-seal {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .seal {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a4a8d 0%, #2a6bc5 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+            border: 2px dashed white;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            
+            .report-card {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .header, .student-info, .performance-summary, .footer {
+                padding: 20px;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .school-name {
+                font-size: 24px;
+            }
+            
+            .marks-table th, .marks-table td {
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+            
+            .performance-value {
+                font-size: 22px;
+            }
+            
+            .signature-area {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 80px;
+            font-weight: 900;
+            color: rgba(26, 74, 141, 0.03);
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="report-card">
+        <div class="watermark">DAV PUBLIC SCHOOL</div>
+        
+        <div class="header">
+            <div class="school-brand">
+                <div class="logo-container">
+                    <div class="logo">DAV<br>PUBLIC<br>SCHOOL</div>
+                </div>
+                <div class="school-info">
+                    <div class="school-name">DAV Public School</div>
+                    <div class="school-motto">"Committed to Excellence in Education"</div>
+                    <div class="school-details">Dehri Patna Road, Dalmiyanagar, Bihar</div>
+                    <div class="school-details">Affiliation No: 3430001 | Contact: +91-9876543210</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="report-title">MID-TERM EXAMINATION REPORT CARD</div>
+        
+        <div class="student-info">
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Student Name</span>
+                    <span class="info-value">Rahul Kumar Sharma</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Roll Number</span>
+                    <span class="info-value">25</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Class & Section</span>
+                    <span class="info-value">X - A</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Admission No.</span>
+                    <span class="info-value">DAV/2021/0456</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Academic Year</span>
+                    <span class="info-value">2023-2024</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Date of Issue</span>
+                    <span class="info-value">15 October 2023</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="marks-section">
+            <table class="marks-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Total Marks</th>
+                        <th>Marks Obtained</th>
+                        <th>Percentage</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="subject-name"><i class="fas fa-book subject-icon"></i> English</td>
+                        <td>100</td>
+                        <td>85</td>
+                        <td>85%</td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td class="subject-name"><i class="fas fa-calculator subject-icon"></i> Mathematics</td>
+                        <td>100</td>
+                        <td>92</td>
+                        <td>92%</td>
+                        <td>A+</td>
+                    </tr>
+                    <tr>
+                        <td class="subject-name"><i class="fas fa-flask subject-icon"></i> Science</td>
+                        <td>100</td>
+                        <td>88</td>
+                        <td>88%</td>
+                        <td>A+</td>
+                    </tr>
+                    <tr>
+                        <td class="subject-name"><i class="fas fa-globe-asia subject-icon"></i> Social Studies</td>
+                        <td>100</td>
+                        <td>78</td>
+                        <td>78%</td>
+                        <td>B+</td>
+                    </tr>
+                    <tr>
+                        <td class="subject-name"><i class="fas fa-language subject-icon"></i> Hindi</td>
+                        <td>100</td>
+                        <td>82</td>
+                        <td>82%</td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td class="subject-name"><i class="fas fa-laptop-code subject-icon"></i> Computer Science</td>
+                        <td>100</td>
+                        <td>95</td>
+                        <td>95%</td>
+                        <td>A+</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td><strong>Grand Total</strong></td>
+                        <td><strong>600</strong></td>
+                        <td><strong>520</strong></td>
+                        <td><strong>86.67%</strong></td>
+                        <td><strong>A+</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="performance-summary">
+            <div class="performance-item">
+                <div class="performance-label">Total Percentage</div>
+                <div class="performance-value percentage-value">86.67%</div>
+            </div>
+            <div class="performance-item">
+                <div class="performance-label">Overall Grade</div>
+                <div class="performance-value grade-value">A+</div>
+            </div>
+            <div class="performance-item">
+                <div class="performance-label">Class Rank</div>
+                <div class="performance-value rank-value">5</div>
+            </div>
+            <div class="performance-item">
+                <div class="performance-label">Attendance</div>
+                <div class="performance-value">94%</div>
+            </div>
+        </div>
+        
+        <div class="signature-area">
+            <div class="signature">
+                <div>Class Teacher</div>
+                <div class="signature-line"></div>
+                <div class="signature-name">Mrs. Priya Singh</div>
+            </div>
+            <div class="signature">
+                <div>Principal</div>
+                <div class="signature-line"></div>
+                <div class="signature-name">Dr. Ramesh Kumar</div>
+            </div>
+            <div class="dav-seal">
+                <div class="seal">DAV<br>SEAL</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p class="footer-note">This is a computer generated report card and does not require a signature.</p>
+            <p>DAV Public School, Dehri Patna Road, Dalmiyanagar | Phone: +91-9876543210 | Email: info@davdehri.edu.in</p>
+        </div>
+    </div>
+</body>
+</html>
